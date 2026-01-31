@@ -1,0 +1,467 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A10001000000000000000001 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002000000000000000001 /* main.swift */; };
+		A10001000000000000000002 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002000000000000000002 /* AppDelegate.swift */; };
+		A10001000000000000000003 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002000000000000000003 /* Constants.swift */; };
+		A10001000000000000000004 /* LevelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002000000000000000004 /* LevelData.swift */; };
+		A10001000000000000000005 /* Bullet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002000000000000000005 /* Bullet.swift */; };
+		A10001000000000000000006 /* Direction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002000000000000000006 /* Direction.swift */; };
+		A10001000000000000000007 /* Eagle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002000000000000000007 /* Eagle.swift */; };
+		A10001000000000000000008 /* EnemyTank.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002000000000000000008 /* EnemyTank.swift */; };
+		A10001000000000000000009 /* Explosion.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002000000000000000009 /* Explosion.swift */; };
+		A1000100000000000000000A /* PlayerTank.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000200000000000000000A /* PlayerTank.swift */; };
+		A1000100000000000000000B /* PowerUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000200000000000000000B /* PowerUp.swift */; };
+		A1000100000000000000000C /* SpawnEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000200000000000000000C /* SpawnEffect.swift */; };
+		A1000100000000000000000D /* Tank.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000200000000000000000D /* Tank.swift */; };
+		A1000100000000000000000E /* Tile.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000200000000000000000E /* Tile.swift */; };
+		A1000100000000000000000F /* GameHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000200000000000000000F /* GameHUD.swift */; };
+		A10001000000000000000010 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002000000000000000010 /* GameState.swift */; };
+		A10001000000000000000011 /* LevelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002000000000000000011 /* LevelManager.swift */; };
+		A10001000000000000000012 /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002000000000000000012 /* SoundManager.swift */; };
+		A10001000000000000000013 /* SpriteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002000000000000000013 /* SpriteManager.swift */; };
+		A10001000000000000000014 /* PhysicsCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002000000000000000014 /* PhysicsCategories.swift */; };
+		A10001000000000000000015 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002000000000000000015 /* GameOverScene.swift */; };
+		A10001000000000000000016 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002000000000000000016 /* GameScene.swift */; };
+		A10001000000000000000017 /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002000000000000000017 /* MenuScene.swift */; };
+		A10001000000000000000018 /* ScoreTallyScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002000000000000000018 /* ScoreTallyScene.swift */; };
+		A10001000000000000000019 /* StageIntroScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002000000000000000019 /* StageIntroScene.swift */; };
+		A10001000000000000000020 /* SpriteKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A10003000000000000000001 /* SpriteKit.framework */; };
+		A10001000000000000000021 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A10003000000000000000002 /* Cocoa.framework */; };
+		A10001000000000000000022 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A10003000000000000000003 /* AVFoundation.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A10002000000000000000001 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		A10002000000000000000002 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		A10002000000000000000003 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		A10002000000000000000004 /* LevelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelData.swift; sourceTree = "<group>"; };
+		A10002000000000000000005 /* Bullet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bullet.swift; sourceTree = "<group>"; };
+		A10002000000000000000006 /* Direction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Direction.swift; sourceTree = "<group>"; };
+		A10002000000000000000007 /* Eagle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Eagle.swift; sourceTree = "<group>"; };
+		A10002000000000000000008 /* EnemyTank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnemyTank.swift; sourceTree = "<group>"; };
+		A10002000000000000000009 /* Explosion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Explosion.swift; sourceTree = "<group>"; };
+		A1000200000000000000000A /* PlayerTank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerTank.swift; sourceTree = "<group>"; };
+		A1000200000000000000000B /* PowerUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerUp.swift; sourceTree = "<group>"; };
+		A1000200000000000000000C /* SpawnEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpawnEffect.swift; sourceTree = "<group>"; };
+		A1000200000000000000000D /* Tank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tank.swift; sourceTree = "<group>"; };
+		A1000200000000000000000E /* Tile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tile.swift; sourceTree = "<group>"; };
+		A1000200000000000000000F /* GameHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameHUD.swift; sourceTree = "<group>"; };
+		A10002000000000000000010 /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
+		A10002000000000000000011 /* LevelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelManager.swift; sourceTree = "<group>"; };
+		A10002000000000000000012 /* SoundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundManager.swift; sourceTree = "<group>"; };
+		A10002000000000000000013 /* SpriteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteManager.swift; sourceTree = "<group>"; };
+		A10002000000000000000014 /* PhysicsCategories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsCategories.swift; sourceTree = "<group>"; };
+		A10002000000000000000015 /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
+		A10002000000000000000016 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		A10002000000000000000017 /* MenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuScene.swift; sourceTree = "<group>"; };
+		A10002000000000000000018 /* ScoreTallyScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreTallyScene.swift; sourceTree = "<group>"; };
+		A10002000000000000000019 /* StageIntroScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StageIntroScene.swift; sourceTree = "<group>"; };
+		A1000200000000000000001A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A10003000000000000000001 /* SpriteKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpriteKit.framework; path = System/Library/Frameworks/SpriteKit.framework; sourceTree = SDKROOT; };
+		A10003000000000000000002 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		A10003000000000000000003 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		A10004000000000000000001 /* BattleCity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BattleCity.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A10005000000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10001000000000000000020 /* SpriteKit.framework in Frameworks */,
+				A10001000000000000000021 /* Cocoa.framework in Frameworks */,
+				A10001000000000000000022 /* AVFoundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A10006000000000000000001 /* = project root */ = {
+			isa = PBXGroup;
+			children = (
+				A10006000000000000000002 /* BattleCity */,
+				A10006000000000000000009 /* Frameworks */,
+				A1000600000000000000000A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A10006000000000000000002 /* BattleCity */ = {
+			isa = PBXGroup;
+			children = (
+				A10006000000000000000003 /* Sources */,
+				A1000200000000000000001A /* Info.plist */,
+			);
+			path = BattleCity;
+			sourceTree = "<group>";
+		};
+		A10006000000000000000003 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				A10002000000000000000001 /* main.swift */,
+				A10002000000000000000002 /* AppDelegate.swift */,
+				A10006000000000000000004 /* Data */,
+				A10006000000000000000005 /* Entities */,
+				A10006000000000000000006 /* HUD */,
+				A10006000000000000000007 /* Managers */,
+				A10006000000000000000008 /* Physics */,
+				A1000600000000000000000B /* Scenes */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		A10006000000000000000004 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				A10002000000000000000003 /* Constants.swift */,
+				A10002000000000000000004 /* LevelData.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		A10006000000000000000005 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				A10002000000000000000005 /* Bullet.swift */,
+				A10002000000000000000006 /* Direction.swift */,
+				A10002000000000000000007 /* Eagle.swift */,
+				A10002000000000000000008 /* EnemyTank.swift */,
+				A10002000000000000000009 /* Explosion.swift */,
+				A1000200000000000000000A /* PlayerTank.swift */,
+				A1000200000000000000000B /* PowerUp.swift */,
+				A1000200000000000000000C /* SpawnEffect.swift */,
+				A1000200000000000000000D /* Tank.swift */,
+				A1000200000000000000000E /* Tile.swift */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		A10006000000000000000006 /* HUD */ = {
+			isa = PBXGroup;
+			children = (
+				A1000200000000000000000F /* GameHUD.swift */,
+			);
+			path = HUD;
+			sourceTree = "<group>";
+		};
+		A10006000000000000000007 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				A10002000000000000000010 /* GameState.swift */,
+				A10002000000000000000011 /* LevelManager.swift */,
+				A10002000000000000000012 /* SoundManager.swift */,
+				A10002000000000000000013 /* SpriteManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		A10006000000000000000008 /* Physics */ = {
+			isa = PBXGroup;
+			children = (
+				A10002000000000000000014 /* PhysicsCategories.swift */,
+			);
+			path = Physics;
+			sourceTree = "<group>";
+		};
+		A10006000000000000000009 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A10003000000000000000001 /* SpriteKit.framework */,
+				A10003000000000000000002 /* Cocoa.framework */,
+				A10003000000000000000003 /* AVFoundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A1000600000000000000000A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A10004000000000000000001 /* BattleCity.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A1000600000000000000000B /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				A10002000000000000000015 /* GameOverScene.swift */,
+				A10002000000000000000016 /* GameScene.swift */,
+				A10002000000000000000017 /* MenuScene.swift */,
+				A10002000000000000000018 /* ScoreTallyScene.swift */,
+				A10002000000000000000019 /* StageIntroScene.swift */,
+			);
+			path = Scenes;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A10007000000000000000001 /* BattleCity */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A10009000000000000000001 /* Build configuration list for PBXNativeTarget "BattleCity" */;
+			buildPhases = (
+				A10008000000000000000001 /* Sources */,
+				A10005000000000000000001 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BattleCity;
+			productName = BattleCity;
+			productReference = A10004000000000000000001 /* BattleCity.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A1000A000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					A10007000000000000000001 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = A10009000000000000000003 /* Build configuration list for PBXProject "BattleCity" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A10006000000000000000001;
+			productRefGroup = A1000600000000000000000A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A10007000000000000000001 /* BattleCity */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A10008000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10001000000000000000001 /* main.swift in Sources */,
+				A10001000000000000000002 /* AppDelegate.swift in Sources */,
+				A10001000000000000000003 /* Constants.swift in Sources */,
+				A10001000000000000000004 /* LevelData.swift in Sources */,
+				A10001000000000000000005 /* Bullet.swift in Sources */,
+				A10001000000000000000006 /* Direction.swift in Sources */,
+				A10001000000000000000007 /* Eagle.swift in Sources */,
+				A10001000000000000000008 /* EnemyTank.swift in Sources */,
+				A10001000000000000000009 /* Explosion.swift in Sources */,
+				A1000100000000000000000A /* PlayerTank.swift in Sources */,
+				A1000100000000000000000B /* PowerUp.swift in Sources */,
+				A1000100000000000000000C /* SpawnEffect.swift in Sources */,
+				A1000100000000000000000D /* Tank.swift in Sources */,
+				A1000100000000000000000E /* Tile.swift in Sources */,
+				A1000100000000000000000F /* GameHUD.swift in Sources */,
+				A10001000000000000000010 /* GameState.swift in Sources */,
+				A10001000000000000000011 /* LevelManager.swift in Sources */,
+				A10001000000000000000012 /* SoundManager.swift in Sources */,
+				A10001000000000000000013 /* SpriteManager.swift in Sources */,
+				A10001000000000000000014 /* PhysicsCategories.swift in Sources */,
+				A10001000000000000000015 /* GameOverScene.swift in Sources */,
+				A10001000000000000000016 /* GameScene.swift in Sources */,
+				A10001000000000000000017 /* MenuScene.swift in Sources */,
+				A10001000000000000000018 /* ScoreTallyScene.swift in Sources */,
+				A10001000000000000000019 /* StageIntroScene.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A1000B000000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A1000B000000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		A1000B000000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = BattleCity/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.andy.BattleCity;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		A1000B000000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = BattleCity/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.andy.BattleCity;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A10009000000000000000001 /* Build configuration list for PBXNativeTarget "BattleCity" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1000B000000000000000003 /* Debug */,
+				A1000B000000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A10009000000000000000003 /* Build configuration list for PBXProject "BattleCity" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1000B000000000000000001 /* Debug */,
+				A1000B000000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A1000A000000000000000001 /* Project object */;
+}
