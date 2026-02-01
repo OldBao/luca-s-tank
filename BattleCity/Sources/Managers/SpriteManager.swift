@@ -50,6 +50,16 @@ struct NESColors {
     static let eagleWing     = CGColor(red: 252/255, green: 252/255, blue: 252/255, alpha: 1)
     static let eagleRed      = CGColor(red: 200/255, green: 56/255, blue: 0/255, alpha: 1)
 
+    // Team colors for melee mode
+    static let teamYellowBody  = CGColor(red: 252/255, green: 200/255, blue: 56/255, alpha: 1)
+    static let teamYellowDark  = CGColor(red: 200/255, green: 152/255, blue: 36/255, alpha: 1)
+    static let teamRedBody     = CGColor(red: 252/255, green: 56/255, blue: 56/255, alpha: 1)
+    static let teamRedDark     = CGColor(red: 180/255, green: 36/255, blue: 36/255, alpha: 1)
+    static let teamBlueBody    = CGColor(red: 56/255, green: 100/255, blue: 252/255, alpha: 1)
+    static let teamBlueDark    = CGColor(red: 36/255, green: 72/255, blue: 200/255, alpha: 1)
+    static let teamGreenBody   = CGColor(red: 56/255, green: 200/255, blue: 56/255, alpha: 1)
+    static let teamGreenDark   = CGColor(red: 36/255, green: 148/255, blue: 36/255, alpha: 1)
+
     // General
     static let black         = CGColor(red: 0, green: 0, blue: 0, alpha: 1)
     static let white         = CGColor(red: 252/255, green: 252/255, blue: 252/255, alpha: 1)
@@ -139,6 +149,60 @@ class SpriteManager {
 
     func hudFlagIcon() -> SKTexture {
         return textureCache["hud_flag"]!
+    }
+
+    /// Melee mode team tank texture — draws a tank in the team's color.
+    func meleeTeamTankTexture(type: EnemyType, direction: Direction, frame: Int,
+                              teamColor: TeamColor, armorHP: Int = 4) -> SKTexture {
+        let key = "melee_\(teamColor.rawValue)_\(type.rawValue)_d\(direction.rawValue)_f\(frame)_hp\(armorHP)"
+        if let cached = textureCache[key] { return cached }
+
+        let bodyColor: CGColor
+        let treadColor: CGColor
+        switch teamColor {
+        case .yellow:
+            bodyColor = NESColors.teamYellowBody
+            treadColor = NESColors.teamYellowDark
+        case .red:
+            bodyColor = NESColors.teamRedBody
+            treadColor = NESColors.teamRedDark
+        case .blue:
+            bodyColor = NESColors.teamBlueBody
+            treadColor = NESColors.teamBlueDark
+        case .green:
+            bodyColor = NESColors.teamGreenBody
+            treadColor = NESColors.teamGreenDark
+        }
+
+        var hasFat = false
+        var hasDouble = false
+        var hasLarger = false
+        var hasArmor = false
+        switch type {
+        case .basic: break
+        case .fast: break
+        case .power:
+            hasFat = true
+            hasDouble = true
+        case .armor:
+            hasFat = true
+            hasLarger = true
+            hasArmor = true
+        }
+
+        let tex = generateTankTexture(
+            bodyColor: bodyColor,
+            barrelColor: NESColors.white,
+            treadColor: treadColor,
+            detailColor: treadColor,
+            direction: direction,
+            frame: frame,
+            hasFatBarrel: hasFat,
+            hasDoubleBarrel: hasDouble,
+            hasLargerTurret: hasLarger,
+            hasArmorPlates: hasArmor)
+        textureCache[key] = tex
+        return tex
     }
 
     // MARK: - Preload All Textures
