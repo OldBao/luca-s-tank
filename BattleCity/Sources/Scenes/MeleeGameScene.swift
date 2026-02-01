@@ -625,26 +625,25 @@ class MeleeGameScene: SKScene {
         case .shield:
             collector.activateShield(duration: 10.0)
         case .bomb:
-            // Destroy all enemy tanks on screen (for collector's team)
-            for (i, tank) in allTanks.enumerated().reversed() {
-                guard tank.teamIndex != collector.teamIndex else { continue }
+            // Destroy all enemy tanks — collect targets first, then remove
+            let targets = allTanks.filter { $0.teamIndex != collector.teamIndex }
+            var needsControlSwitch = false
+            for tank in targets {
+                guard let idx = allTanks.firstIndex(where: { $0 === tank }) else { continue }
                 let exp = Explosion(at: tank.position, size: .large)
                 worldNode.addChild(exp)
                 teamKills[collector.teamIndex] += 1
                 teamDeaths[tank.teamIndex] += 1
                 if collector.teamIndex == 0 { playerKills += 1 }
-                let wasControlled = (tank === controlledTank)
+                if tank === controlledTank { needsControlSwitch = true }
                 tank.removeFromParent()
-                allTanks.remove(at: i)
-                // Check team elimination
+                allTanks.remove(at: idx)
                 let teamAlive = allTanks.filter { $0.teamIndex == tank.teamIndex }.count
                 if teamAlive == 0 && !eliminationOrder.contains(tank.teamIndex) {
                     eliminationOrder.append(tank.teamIndex)
                 }
-                if wasControlled {
-                    switchToNextTeammate()
-                }
             }
+            if needsControlSwitch { switchToNextTeammate() }
             SoundManager.shared.playExplosionLarge(on: self)
         case .clock:
             // Freeze all teams except collector's team for 10s
@@ -753,7 +752,15 @@ class MeleeGameScene: SKScene {
         }
         let aliveTeams = (0..<4).filter { teamSurviving[$0] > 0 }
         if aliveTeams.count <= 1 {
-            let winnerIndex = aliveTeams.first ?? 0
+            // If no teams alive (draw), pick team with most kills; fallback to last eliminated
+            let winnerIndex: Int
+            if let alive = aliveTeams.first {
+                winnerIndex = alive
+            } else if let lastEliminated = eliminationOrder.last {
+                winnerIndex = lastEliminated
+            } else {
+                winnerIndex = (0..<4).max(by: { teamKills[$0] < teamKills[$1] }) ?? 0
+            }
             transitionToScoreScene(winner: winnerIndex, surviving: teamSurviving)
         }
     }
