@@ -52,6 +52,7 @@ class MeleeGameScene: SKScene {
     // MARK: - HUD
 
     var meleeHUD: MeleeHUD!
+    var minimap: MeleeMinimap!
 
     // MARK: - Stats
 
@@ -107,6 +108,12 @@ class MeleeGameScene: SKScene {
         meleeHUD.setup(config: meleeConfig)
         meleeHUD.zPosition = 200
         self.addChild(meleeHUD)
+
+        // Setup minimap (added to scene, not worldNode)
+        minimap = MeleeMinimap()
+        minimap.setup(mapData: mapData, gridSize: meleeConfig.mapSize.tiles)
+        minimap.position = CGPoint(x: Constants.logicalWidth - 56, y: 4)
+        self.addChild(minimap)
 
         // Create player marker
         playerMarker = SKSpriteNode(color: .white, size: CGSize(width: 4, height: 4))
@@ -682,6 +689,7 @@ class MeleeGameScene: SKScene {
             surviving[tank.teamIndex] += 1
         }
         meleeHUD.update(surviving: surviving)
+        minimap.updateTanks(allTanks)
     }
 
     // MARK: - Camera
