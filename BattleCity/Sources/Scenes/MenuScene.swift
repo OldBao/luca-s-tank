@@ -48,6 +48,15 @@ class MenuScene: SKScene {
         arrows.horizontalAlignmentMode = .center
         self.addChild(arrows)
 
+        // Melee mode option
+        let opt3 = SKLabelNode(text: "MELEE MODE")
+        opt3.fontName = "Courier-Bold"
+        opt3.fontSize = 10
+        opt3.fontColor = .white
+        opt3.position = CGPoint(x: Constants.logicalWidth / 2 + 10, y: 150)
+        opt3.horizontalAlignmentMode = .center
+        self.addChild(opt3)
+
         // Cursor
         cursorNode = SKLabelNode(text: "▸")
         cursorNode.fontName = "Courier-Bold"
@@ -62,7 +71,7 @@ class MenuScene: SKScene {
         instr.fontName = "Courier"
         instr.fontSize = 5
         instr.fontColor = SKColor(white: 0.6, alpha: 1)
-        instr.position = CGPoint(x: Constants.logicalWidth / 2, y: 160)
+        instr.position = CGPoint(x: Constants.logicalWidth / 2, y: 175)
         instr.horizontalAlignmentMode = .center
         self.addChild(instr)
 
@@ -79,12 +88,17 @@ class MenuScene: SKScene {
     override func keyDown(with event: NSEvent) {
         switch event.keyCode {
         case 36: // Enter
-            startGame()
+            if selectedOption == 2 {
+                let scene = MeleeMenuScene(size: CGSize(width: Constants.logicalWidth, height: Constants.logicalHeight))
+                self.view?.presentScene(scene, transition: SKTransition.fade(with: .black, duration: 0.5))
+            } else {
+                startGame()
+            }
         case 126: // Up arrow
-            selectedOption = 0
+            selectedOption = max(0, selectedOption - 1)
             updateCursor()
         case 125: // Down arrow
-            selectedOption = 1
+            selectedOption = min(2, selectedOption + 1)
             updateCursor()
         case 123: // Left arrow
             if selectedOption == 1 {
@@ -104,7 +118,8 @@ class MenuScene: SKScene {
     }
 
     private func updateCursor() {
-        let y: CGFloat = selectedOption == 0 ? 110 : 130
+        let yPositions: [CGFloat] = [110, 130, 150]
+        let y = yPositions[selectedOption]
         cursorNode.position = CGPoint(x: Constants.logicalWidth / 2 - 40, y: y)
     }
 
