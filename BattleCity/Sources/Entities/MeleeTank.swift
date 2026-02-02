@@ -60,7 +60,7 @@ class MeleeTank: Tank {
             type: tankType, direction: .up, frame: 0, teamColor: teamColor
         )
         super.init(texture: tex)
-        self.moveSpeed = tankType.speed
+        self.moveSpeed = isPlayerControlled ? Constants.playerSpeed : tankType.speed
         self.hp = hp
         self.direction = .up
 

@@ -151,7 +151,8 @@ class MeleeMenuScene: SKScene {
         case 36: // Enter
             if selectedField == 4 {
                 applySimplifiedConfig()
-                let scene = MeleeGameScene(size: CGSize(width: Constants.logicalWidth, height: Constants.logicalHeight))
+                let playArea = CGFloat(meleeConfig.mapSize.tiles) * Constants.tileSize
+                let scene = MeleeGameScene(size: CGSize(width: playArea, height: playArea))
                 scene.meleeConfig = meleeConfig
                 self.view?.presentScene(scene, transition: SKTransition.fade(with: .black, duration: 0.5))
             }

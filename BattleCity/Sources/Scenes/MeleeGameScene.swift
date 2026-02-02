@@ -52,7 +52,6 @@ class MeleeGameScene: SKScene {
     // MARK: - HUD
 
     var meleeHUD: MeleeHUD!
-    var minimap: MeleeMinimap!
 
     // MARK: - Stats
 
@@ -60,11 +59,6 @@ class MeleeGameScene: SKScene {
     var teamDeaths: [Int] = [0, 0, 0, 0]
     var playerKills: Int = 0
     var eliminationOrder: [Int] = []
-
-    // MARK: - Camera
-
-    var cameraX: CGFloat = 0
-    var cameraY: CGFloat = 0
 
     // MARK: - State
 
@@ -109,27 +103,14 @@ class MeleeGameScene: SKScene {
         meleeHUD.zPosition = 200
         self.addChild(meleeHUD)
 
-        // Setup minimap (added to scene, not worldNode)
-        minimap = MeleeMinimap()
-        minimap.setup(mapData: mapData, gridSize: meleeConfig.mapSize.tiles)
-        minimap.position = CGPoint(x: Constants.logicalWidth - 56, y: 4)
-        self.addChild(minimap)
-
         // Create player marker
         playerMarker = SKSpriteNode(color: .white, size: CGSize(width: 4, height: 4))
         playerMarker.zPosition = 25
         worldNode.addChild(playerMarker)
         updatePlayerMarker()
 
-        // Initialize camera to player position
-        if let tank = controlledTank {
-            cameraX = tank.position.x
-            cameraY = tank.position.y
-        } else {
-            cameraX = playAreaSize / 2
-            cameraY = playAreaSize / 2
-        }
-        updateCameraPosition()
+        // worldNode at origin — scene size matches play area
+        worldNode.position = .zero
 
         // Start music
         SoundManager.shared.startMusic()
@@ -247,7 +228,6 @@ class MeleeGameScene: SKScene {
         updateShieldsAndFreeze(dt: dt)
         updateAnimations(dt: dt)
         updateHUD()
-        updateCamera(dt: dt)
         checkWinCondition()
     }
 
@@ -560,12 +540,14 @@ class MeleeGameScene: SKScene {
 
     func switchToNextTeammate() {
         controlledTank?.isPlayerControlled = false
+        controlledTank?.moveSpeed = controlledTank?.tankType.speed ?? Constants.basicEnemySpeed
         controlledTank = nil
 
         let playerTeamIdx = 0  // player is always team 0
         let teammates = allTanks.filter { $0.teamIndex == playerTeamIdx }
         if let next = teammates.first {
             next.isPlayerControlled = true
+            next.moveSpeed = Constants.playerSpeed
             controlledTank = next
         } else {
             // Spectator mode: follow a random surviving tank
@@ -688,49 +670,8 @@ class MeleeGameScene: SKScene {
             surviving[tank.teamIndex] += 1
         }
         meleeHUD.update(surviving: surviving)
-        minimap.updateTanks(allTanks)
     }
 
-    // MARK: - Camera
-
-    func updateCamera(dt: TimeInterval) {
-        // Determine target
-        var targetX: CGFloat
-        var targetY: CGFloat
-
-        if let tank = controlledTank {
-            targetX = tank.position.x
-            targetY = tank.position.y
-        } else if let spec = spectatorTarget, spec.parent != nil {
-            targetX = spec.position.x
-            targetY = spec.position.y
-        } else {
-            // Pick a new spectator target
-            spectatorTarget = allTanks.first
-            targetX = spectatorTarget?.position.x ?? levelManager.playAreaSize / 2
-            targetY = spectatorTarget?.position.y ?? levelManager.playAreaSize / 2
-        }
-
-        // Lerp
-        cameraX += (targetX - cameraX) * 0.1
-        cameraY += (targetY - cameraY) * 0.1
-
-        // Clamp so viewport doesn't go outside map
-        let halfW = Constants.logicalWidth / 2
-        let halfH = Constants.logicalHeight / 2
-        let playArea = levelManager.playAreaSize
-
-        cameraX = max(halfW, min(playArea - halfW, cameraX))
-        cameraY = max(halfH, min(playArea - halfH, cameraY))
-
-        updateCameraPosition()
-    }
-
-    func updateCameraPosition() {
-        let viewCenterX = Constants.logicalWidth / 2
-        let viewCenterY = Constants.logicalHeight / 2
-        worldNode.position = CGPoint(x: viewCenterX - cameraX, y: viewCenterY - cameraY)
-    }
 
     // MARK: - Player Marker
 
@@ -751,11 +692,20 @@ class MeleeGameScene: SKScene {
             teamSurviving[tank.teamIndex] += 1
         }
         let aliveTeams = (0..<4).filter { teamSurviving[$0] > 0 }
-        if aliveTeams.count <= 1 {
-            // If no teams alive (draw), pick team with most kills; fallback to last eliminated
+
+        // End match if only 1 team left OR if player's team is eliminated
+        let playerEliminated = teamSurviving[0] == 0
+        if aliveTeams.count <= 1 || playerEliminated {
             let winnerIndex: Int
-            if let alive = aliveTeams.first {
+            if aliveTeams.count == 1, let alive = aliveTeams.first {
                 winnerIndex = alive
+            } else if playerEliminated {
+                // Player lost — pick team with most tanks alive, then most kills
+                winnerIndex = (1..<4).max(by: {
+                    teamSurviving[$0] != teamSurviving[$1]
+                        ? teamSurviving[$0] < teamSurviving[$1]
+                        : teamKills[$0] < teamKills[$1]
+                }) ?? 1
             } else if let lastEliminated = eliminationOrder.last {
                 winnerIndex = lastEliminated
             } else {
@@ -800,7 +750,7 @@ class MeleeGameScene: SKScene {
         winLabel.fontColor = .white
         winLabel.horizontalAlignmentMode = .center
         winLabel.verticalAlignmentMode = .center
-        winLabel.position = CGPoint(x: Constants.logicalWidth / 2, y: Constants.logicalHeight / 2)
+        winLabel.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2)
         winLabel.zPosition = 300
         self.addChild(winLabel)
 
@@ -809,6 +759,7 @@ class MeleeGameScene: SKScene {
             SKAction.run { [weak self] in
                 guard let self = self else { return }
                 let scene = MeleeScoreScene(size: CGSize(width: Constants.logicalWidth, height: Constants.logicalHeight))
+                scene.scaleMode = .aspectFit
                 scene.matchResult = result
                 scene.meleeConfig = self.meleeConfig
                 self.view?.presentScene(scene, transition: SKTransition.fade(with: .black, duration: 0.5))
