@@ -11,7 +11,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let contentRect = NSRect(x: 0, y: 0, width: windowWidth, height: windowHeight)
         window = NSWindow(
             contentRect: contentRect,
-            styleMask: [.titled, .closable, .miniaturizable],
+            styleMask: [.titled, .closable, .miniaturizable, .resizable],
             backing: .buffered,
             defer: false
         )
@@ -19,9 +19,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.center()
         window.isReleasedWhenClosed = false
         window.backgroundColor = .black
+        window.collectionBehavior = [.fullScreenPrimary]
 
         let skView = SKView(frame: contentRect)
         skView.ignoresSiblingOrder = true
+        skView.autoresizingMask = [.width, .height]
         // skView.showsFPS = true
         // skView.showsNodeCount = true
 
@@ -32,6 +34,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         skView.presentScene(scene)
 
         window.makeKeyAndOrderFront(nil)
+        window.toggleFullScreen(nil)
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
