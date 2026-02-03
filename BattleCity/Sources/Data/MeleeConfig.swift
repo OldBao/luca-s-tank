@@ -54,21 +54,74 @@ enum MapSize: Int, CaseIterable {
 struct MeleeConfig {
     var mapSize: MapSize = .medium
     var playerColor: TeamColor = .yellow
-    var teams: [TeamConfig]
+    var totalTanks: Int = 5
+    var teamConfig: TeamConfig = TeamConfig.defaultConfig(color: .yellow, isPlayer: true)
+    var teams: [TeamConfig] = []
+    let hpCap: Int = 5
 
     init() {
-        let allColors: [TeamColor] = [.yellow, .red, .blue, .green]
-        teams = allColors.map { color in
-            TeamConfig.defaultConfig(color: color, isPlayer: color == .yellow)
-        }
+        teamConfig = TeamConfig.defaultConfig(color: .yellow, isPlayer: true)
+        totalTanks = teamConfig.totalTanks
+        teams = buildMirroredTeams()
+    }
+
+    var remainingTanks: Int {
+        max(0, totalTanks - teamConfig.totalTanks)
     }
 
     mutating func setPlayerColor(_ color: TeamColor) {
         playerColor = color
-        let otherColors = TeamColor.allCases.filter { $0 != color }
-        teams[0] = TeamConfig.defaultConfig(color: color, isPlayer: true)
-        for i in 1..<4 {
-            teams[i] = TeamConfig.defaultConfig(color: otherColors[i - 1], isPlayer: false)
+        teamConfig.color = color
+        teams = buildMirroredTeams()
+    }
+
+    mutating func adjustCount(for type: EnemyType, delta: Int) -> Bool {
+        guard var cfg = teamConfig.tanks[type] else { return false }
+        let newCount = max(0, cfg.count + delta)
+        let newTotal = teamConfig.totalTanks - cfg.count + newCount
+        guard newTotal <= totalTanks else { return false }
+        cfg.count = newCount
+        teamConfig.tanks[type] = cfg
+        return true
+    }
+
+    mutating func adjustHP(for type: EnemyType, delta: Int) {
+        guard var cfg = teamConfig.tanks[type] else { return }
+        cfg.hp = max(1, min(hpCap, cfg.hp + delta))
+        teamConfig.tanks[type] = cfg
+    }
+
+    mutating func adjustTotalTanks(to newTotal: Int, lastEdited: EnemyType?) {
+        totalTanks = max(1, newTotal)
+        guard teamConfig.totalTanks > totalTanks else { return }
+        reduceCountsToFit(prefer: lastEdited)
+    }
+
+    mutating func reduceCountsToFit(prefer: EnemyType?) {
+        let order: [EnemyType] = [.basic, .fast, .power, .armor]
+        var types = order
+        if let prefer = prefer, let idx = types.firstIndex(of: prefer) {
+            types.remove(at: idx)
+            types.insert(prefer, at: 0)
         }
+        while teamConfig.totalTanks > totalTanks {
+            for type in types {
+                if var cfg = teamConfig.tanks[type], cfg.count > 0 {
+                    cfg.count -= 1
+                    teamConfig.tanks[type] = cfg
+                    break
+                }
+            }
+        }
+    }
+
+    func buildMirroredTeams() -> [TeamConfig] {
+        let otherColors = TeamColor.allCases.filter { $0 != playerColor }
+        return [
+            TeamConfig(color: playerColor, isPlayer: true, tanks: teamConfig.tanks),
+            TeamConfig(color: otherColors[0], isPlayer: false, tanks: teamConfig.tanks),
+            TeamConfig(color: otherColors[1], isPlayer: false, tanks: teamConfig.tanks),
+            TeamConfig(color: otherColors[2], isPlayer: false, tanks: teamConfig.tanks)
+        ]
     }
 }
