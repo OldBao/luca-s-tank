@@ -4,24 +4,65 @@ class MeleeMenuScene: SKScene {
 
     var meleeConfig: MeleeConfig!
 
-    private var selectedField = 0
-    private var fieldCount = 5
+    private enum Field {
+        case mapSize
+        case playerColor
+        case totalTanks
+        case basicCount
+        case basicHP
+        case fastCount
+        case fastHP
+        case powerCount
+        case powerHP
+        case armorCount
+        case armorHP
+        case start
+    }
+
+    private let fields: [Field] = [
+        .mapSize,
+        .playerColor,
+        .totalTanks,
+        .basicCount,
+        .basicHP,
+        .fastCount,
+        .fastHP,
+        .powerCount,
+        .powerHP,
+        .armorCount,
+        .armorHP,
+        .start
+    ]
+
+    private var selectedFieldIndex = 0
     private var cursorNode: SKLabelNode!
 
-    // Labels that need updating
     private var mapSizeLabel: SKLabelNode!
     private var colorLabel: SKLabelNode!
-    private var tanksLabel: SKLabelNode!
-    private var hpLabel: SKLabelNode!
+    private var totalLabel: SKLabelNode!
+    private var remainingLabel: SKLabelNode!
+    private var countLabels: [EnemyType: SKLabelNode] = [:]
+    private var hpLabels: [EnemyType: SKLabelNode] = [:]
 
-    // Simplified config values
-    private var tanksPerTeam: Int = 5
-    private var tankHP: Int = 3
+    private var lastEditedType: EnemyType?
 
-    // Field Y positions (NES-style, origin at top-left, but SpriteKit Y=0 at bottom)
-    // We'll use SpriteKit coords directly
-    private let fieldYPositions: [CGFloat] = [70, 88, 106, 124, 152]
-    private let fieldLabels = ["MAP SIZE:", "YOUR COLOR:", "TANKS/TEAM:", "TANK HP:", "START BATTLE"]
+    private let labelX: CGFloat = 30
+    private let valueX: CGFloat = 130
+    private let hpValueX: CGFloat = 190
+    private let cursorXLeft: CGFloat = 20
+    private let cursorXRight: CGFloat = 160
+
+    private let yMap: CGFloat = 80
+    private let yColor: CGFloat = 92
+    private let yTotal: CGFloat = 104
+    private let yHeader: CGFloat = 118
+    private let yBasic: CGFloat = 132
+    private let yFast: CGFloat = 144
+    private let yPower: CGFloat = 156
+    private let yArmor: CGFloat = 168
+    private let yStart: CGFloat = 186
+
+    private var fieldPositions: [Field: CGPoint] = [:]
 
     override func didMove(to view: SKView) {
         self.backgroundColor = .black
@@ -31,13 +72,6 @@ class MeleeMenuScene: SKScene {
             meleeConfig = MeleeConfig()
         }
 
-        // Sync simplified values from config
-        tanksPerTeam = meleeConfig.teams[0].totalTanks
-        if tanksPerTeam == 0 { tanksPerTeam = 5 }
-        if let firstType = meleeConfig.teams[0].tanks.values.first {
-            tankHP = firstType.hp
-        }
-
         let orange = SKColor(red: 252/255, green: 152/255, blue: 56/255, alpha: 1)
 
         // Title
@@ -45,56 +79,56 @@ class MeleeMenuScene: SKScene {
         title.fontName = "Courier-Bold"
         title.fontSize = 14
         title.fontColor = orange
-        title.position = CGPoint(x: Constants.logicalWidth / 2, y: 40)
+        title.position = CGPoint(x: Constants.logicalWidth / 2, y: 50)
         title.horizontalAlignmentMode = .center
         self.addChild(title)
 
-        // Fields
-        let labelX: CGFloat = 30
-        let valueX: CGFloat = 170
+        // Field labels
+        addLabel(text: "MAP SIZE:", x: labelX, y: yMap)
+        addLabel(text: "YOUR COLOR:", x: labelX, y: yColor)
+        addLabel(text: "TOTAL TANKS:", x: labelX, y: yTotal)
 
-        for i in 0..<fieldCount {
-            let label = SKLabelNode(text: fieldLabels[i])
-            label.fontName = "Courier-Bold"
-            label.fontSize = 7
-            label.fontColor = .white
-            label.position = CGPoint(x: labelX, y: fieldYPositions[i])
-            label.horizontalAlignmentMode = .left
-            self.addChild(label)
-        }
+        let header = SKLabelNode(text: "YOUR TEAM (MIRRORED TO AI)")
+        header.fontName = "Courier-Bold"
+        header.fontSize = 6
+        header.fontColor = SKColor(white: 0.8, alpha: 1)
+        header.position = CGPoint(x: labelX, y: yHeader)
+        header.horizontalAlignmentMode = .left
+        self.addChild(header)
+
+        addLabel(text: "BASIC:", x: labelX, y: yBasic)
+        addLabel(text: "FAST:", x: labelX, y: yFast)
+        addLabel(text: "POWER:", x: labelX, y: yPower)
+        addLabel(text: "ARMOR:", x: labelX, y: yArmor)
+        addLabel(text: "START BATTLE", x: labelX, y: yStart)
 
         // Value labels
-        mapSizeLabel = SKLabelNode(text: meleeConfig.mapSize.label)
-        mapSizeLabel.fontName = "Courier-Bold"
-        mapSizeLabel.fontSize = 7
-        mapSizeLabel.fontColor = .white
-        mapSizeLabel.position = CGPoint(x: valueX, y: fieldYPositions[0])
-        mapSizeLabel.horizontalAlignmentMode = .left
-        self.addChild(mapSizeLabel)
+        mapSizeLabel = valueLabel(text: meleeConfig.mapSize.label, x: valueX, y: yMap)
+        colorLabel = valueLabel(text: meleeConfig.playerColor.name, x: valueX, y: yColor)
+        totalLabel = valueLabel(text: "\(meleeConfig.totalTanks)", x: valueX, y: yTotal)
+        remainingLabel = valueLabel(text: "Remaining: \(meleeConfig.remainingTanks)",
+                                     x: hpValueX - 20, y: yTotal)
 
-        colorLabel = SKLabelNode(text: meleeConfig.playerColor.name)
-        colorLabel.fontName = "Courier-Bold"
-        colorLabel.fontSize = 7
-        colorLabel.fontColor = .white
-        colorLabel.position = CGPoint(x: valueX, y: fieldYPositions[1])
-        colorLabel.horizontalAlignmentMode = .left
-        self.addChild(colorLabel)
+        createTankRowLabels(type: .basic, y: yBasic)
+        createTankRowLabels(type: .fast, y: yFast)
+        createTankRowLabels(type: .power, y: yPower)
+        createTankRowLabels(type: .armor, y: yArmor)
 
-        tanksLabel = SKLabelNode(text: "\(tanksPerTeam)")
-        tanksLabel.fontName = "Courier-Bold"
-        tanksLabel.fontSize = 7
-        tanksLabel.fontColor = .white
-        tanksLabel.position = CGPoint(x: valueX, y: fieldYPositions[2])
-        tanksLabel.horizontalAlignmentMode = .left
-        self.addChild(tanksLabel)
-
-        hpLabel = SKLabelNode(text: "\(tankHP)")
-        hpLabel.fontName = "Courier-Bold"
-        hpLabel.fontSize = 7
-        hpLabel.fontColor = .white
-        hpLabel.position = CGPoint(x: valueX, y: fieldYPositions[3])
-        hpLabel.horizontalAlignmentMode = .left
-        self.addChild(hpLabel)
+        // Cursor positions
+        fieldPositions = [
+            .mapSize: CGPoint(x: cursorXLeft, y: yMap),
+            .playerColor: CGPoint(x: cursorXLeft, y: yColor),
+            .totalTanks: CGPoint(x: cursorXLeft, y: yTotal),
+            .basicCount: CGPoint(x: cursorXLeft, y: yBasic),
+            .basicHP: CGPoint(x: cursorXRight, y: yBasic),
+            .fastCount: CGPoint(x: cursorXLeft, y: yFast),
+            .fastHP: CGPoint(x: cursorXRight, y: yFast),
+            .powerCount: CGPoint(x: cursorXLeft, y: yPower),
+            .powerHP: CGPoint(x: cursorXRight, y: yPower),
+            .armorCount: CGPoint(x: cursorXLeft, y: yArmor),
+            .armorHP: CGPoint(x: cursorXRight, y: yArmor),
+            .start: CGPoint(x: cursorXLeft, y: yStart)
+        ]
 
         // Cursor
         cursorNode = SKLabelNode(text: "\u{25B8}")
@@ -110,35 +144,63 @@ class MeleeMenuScene: SKScene {
         instr.fontName = "Courier"
         instr.fontSize = 5
         instr.fontColor = SKColor(white: 0.5, alpha: 1)
-        instr.position = CGPoint(x: Constants.logicalWidth / 2, y: 180)
+        instr.position = CGPoint(x: Constants.logicalWidth / 2, y: 204)
         instr.horizontalAlignmentMode = .center
         self.addChild(instr)
     }
 
+    private func addLabel(text: String, x: CGFloat, y: CGFloat) {
+        let label = SKLabelNode(text: text)
+        label.fontName = "Courier-Bold"
+        label.fontSize = 7
+        label.fontColor = .white
+        label.position = CGPoint(x: x, y: y)
+        label.horizontalAlignmentMode = .left
+        self.addChild(label)
+    }
+
+    private func valueLabel(text: String, x: CGFloat, y: CGFloat) -> SKLabelNode {
+        let label = SKLabelNode(text: text)
+        label.fontName = "Courier-Bold"
+        label.fontSize = 7
+        label.fontColor = .white
+        label.position = CGPoint(x: x, y: y)
+        label.horizontalAlignmentMode = .left
+        self.addChild(label)
+        return label
+    }
+
+    private func createTankRowLabels(type: EnemyType, y: CGFloat) {
+        let countLabel = valueLabel(text: "\(count(for: type))", x: valueX, y: y)
+        let hpLabel = valueLabel(text: "HP: \(hp(for: type))", x: hpValueX, y: y)
+        countLabels[type] = countLabel
+        hpLabels[type] = hpLabel
+    }
+
+    private func count(for type: EnemyType) -> Int {
+        meleeConfig.teamConfig.tanks[type]?.count ?? 0
+    }
+
+    private func hp(for type: EnemyType) -> Int {
+        meleeConfig.teamConfig.tanks[type]?.hp ?? 1
+    }
+
     private func updateCursor() {
-        cursorNode.position = CGPoint(x: 20, y: fieldYPositions[selectedField])
+        let field = fields[selectedFieldIndex]
+        if let pos = fieldPositions[field] {
+            cursorNode.position = pos
+        }
     }
 
     private func updateValueLabels() {
         mapSizeLabel.text = meleeConfig.mapSize.label
         colorLabel.text = meleeConfig.playerColor.name
-        tanksLabel.text = "\(tanksPerTeam)"
-        hpLabel.text = "\(tankHP)"
-    }
+        totalLabel.text = "\(meleeConfig.totalTanks)"
+        remainingLabel.text = "Remaining: \(meleeConfig.remainingTanks)"
 
-    private func applySimplifiedConfig() {
-        // Distribute tanks evenly: basic gets extra if not divisible
-        let perType = tanksPerTeam / 4
-        let remainder = tanksPerTeam % 4
-        let types: [EnemyType] = [.basic, .fast, .power, .armor]
-
-        for i in 0..<4 {
-            var tankDict: [EnemyType: TankTypeConfig] = [:]
-            for (j, t) in types.enumerated() {
-                let count = perType + (j < remainder ? 1 : 0)
-                tankDict[t] = TankTypeConfig(count: count, hp: tankHP)
-            }
-            meleeConfig.teams[i].tanks = tankDict
+        for type in [EnemyType.basic, .fast, .power, .armor] {
+            countLabels[type]?.text = "\(count(for: type))"
+            hpLabels[type]?.text = "HP: \(hp(for: type))"
         }
     }
 
@@ -149,8 +211,7 @@ class MeleeMenuScene: SKScene {
             self.view?.presentScene(scene, transition: SKTransition.fade(with: .black, duration: 0.5))
 
         case 36: // Enter
-            if selectedField == 4 {
-                applySimplifiedConfig()
+            if fields[selectedFieldIndex] == .start {
                 let playArea = CGFloat(meleeConfig.mapSize.tiles) * Constants.tileSize
                 let scene = MeleeGameScene(size: CGSize(width: playArea, height: playArea))
                 scene.meleeConfig = meleeConfig
@@ -158,11 +219,11 @@ class MeleeMenuScene: SKScene {
             }
 
         case 126: // Up
-            selectedField = max(0, selectedField - 1)
+            selectedFieldIndex = max(0, selectedFieldIndex - 1)
             updateCursor()
 
         case 125: // Down
-            selectedField = min(fieldCount - 1, selectedField + 1)
+            selectedFieldIndex = min(fields.count - 1, selectedFieldIndex + 1)
             updateCursor()
 
         case 123: // Left
@@ -177,24 +238,38 @@ class MeleeMenuScene: SKScene {
     }
 
     private func adjustField(delta: Int) {
-        switch selectedField {
-        case 0: // Map size
+        switch fields[selectedFieldIndex] {
+        case .mapSize:
             let cases = MapSize.allCases
             if let idx = cases.firstIndex(of: meleeConfig.mapSize) {
                 let newIdx = (idx + delta + cases.count) % cases.count
                 meleeConfig.mapSize = cases[newIdx]
             }
-        case 1: // Player color
+        case .playerColor:
             let cases = TeamColor.allCases
             if let idx = cases.firstIndex(of: meleeConfig.playerColor) {
                 let newIdx = (idx + delta + cases.count) % cases.count
                 meleeConfig.setPlayerColor(cases[newIdx])
             }
-        case 2: // Tanks per team
-            tanksPerTeam = max(1, min(9, tanksPerTeam + delta))
-        case 3: // Tank HP
-            tankHP = max(1, min(9, tankHP + delta))
-        default:
+        case .totalTanks:
+            meleeConfig.adjustTotalTanks(to: meleeConfig.totalTanks + delta, lastEdited: lastEditedType)
+        case .basicCount:
+            if meleeConfig.adjustCount(for: .basic, delta: delta) { lastEditedType = .basic }
+        case .basicHP:
+            meleeConfig.adjustHP(for: .basic, delta: delta)
+        case .fastCount:
+            if meleeConfig.adjustCount(for: .fast, delta: delta) { lastEditedType = .fast }
+        case .fastHP:
+            meleeConfig.adjustHP(for: .fast, delta: delta)
+        case .powerCount:
+            if meleeConfig.adjustCount(for: .power, delta: delta) { lastEditedType = .power }
+        case .powerHP:
+            meleeConfig.adjustHP(for: .power, delta: delta)
+        case .armorCount:
+            if meleeConfig.adjustCount(for: .armor, delta: delta) { lastEditedType = .armor }
+        case .armorHP:
+            meleeConfig.adjustHP(for: .armor, delta: delta)
+        case .start:
             break
         }
         updateValueLabels()
