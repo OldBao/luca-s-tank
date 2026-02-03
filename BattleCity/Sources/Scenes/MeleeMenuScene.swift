@@ -212,6 +212,7 @@ class MeleeMenuScene: SKScene {
 
         case 36: // Enter
             if fields[selectedFieldIndex] == .start {
+                meleeConfig.teams = meleeConfig.buildMirroredTeams()
                 let playArea = CGFloat(meleeConfig.mapSize.tiles) * Constants.tileSize
                 let scene = MeleeGameScene(size: CGSize(width: playArea, height: playArea))
                 scene.meleeConfig = meleeConfig
