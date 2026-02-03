@@ -147,6 +147,10 @@ class SpriteManager {
         return textureCache["hud_life"]!
     }
 
+    func hudHeartIcon() -> SKTexture {
+        return textureCache["hud_heart"]!
+    }
+
     func hudFlagIcon() -> SKTexture {
         return textureCache["hud_flag"]!
     }
@@ -299,6 +303,7 @@ class SpriteManager {
         // HUD
         textureCache["hud_enemy"] = generateHUDEnemyIcon()
         textureCache["hud_life"] = generateHUDLifeIcon()
+        textureCache["hud_heart"] = generateHUDHeartIcon()
         textureCache["hud_flag"] = generateHUDFlagIcon()
     }
 
@@ -1191,6 +1196,23 @@ class SpriteManager {
 
         return textureFromContext(ctx)
     }
+
+    /// HP heart icon (6x6).
+    private func generateHUDHeartIcon() -> SKTexture {
+        guard let ctx = createContext(width: 6, height: 6) else { return SKTexture() }
+        ctx.clear(CGRect(x: 0, y: 0, width: 6, height: 6))
+
+        let red = NESColors.red
+        fillRect(ctx, x: 1, y: 3, w: 1, h: 1, color: red)
+        fillRect(ctx, x: 4, y: 3, w: 1, h: 1, color: red)
+        fillRect(ctx, x: 0, y: 2, w: 2, h: 2, color: red)
+        fillRect(ctx, x: 4, y: 2, w: 2, h: 2, color: red)
+        fillRect(ctx, x: 1, y: 1, w: 4, h: 2, color: red)
+        fillRect(ctx, x: 2, y: 0, w: 2, h: 1, color: red)
+
+        return textureFromContext(ctx)
+    }
+
 
     /// Flag/level indicator icon (16x16).
     private func generateHUDFlagIcon() -> SKTexture {

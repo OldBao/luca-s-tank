@@ -35,6 +35,8 @@ class MeleeTank: Tank {
     var isFrozen: Bool = false
     var frozenTimer: TimeInterval = 0
 
+    private let hpIndicator = HPIndicator()
+
     // For world-space positioning (no play area origin offset)
     var meleePlayAreaSize: CGFloat = 0
 
@@ -63,6 +65,11 @@ class MeleeTank: Tank {
         self.moveSpeed = isPlayerControlled ? Constants.playerSpeed : tankType.speed
         self.hp = hp
         self.direction = .up
+
+        hpIndicator.position = CGPoint(x: 0, y: Constants.tileSize / 2 + 4)
+        hpIndicator.zPosition = 30
+        hpIndicator.update(hp: hp)
+        self.addChild(hpIndicator)
 
         directionChangeInterval = TimeInterval.random(in: 1.5...4.0)
         fireInterval = TimeInterval.random(in: 0.8...2.5)
@@ -348,6 +355,7 @@ class MeleeTank: Tank {
     override func takeDamage() -> Bool {
         hp -= 1
         updateTexture()
+        hpIndicator.update(hp: hp)
         return hp <= 0
     }
 }
