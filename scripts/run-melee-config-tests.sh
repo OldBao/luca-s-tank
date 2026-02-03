@@ -15,6 +15,7 @@ swiftc \
   -o "$BIN" \
   "$ROOT/Tests/MeleeConfigTests.swift" \
   "$ROOT/BattleCity/Sources/Data/MeleeConfig.swift" \
+  "$ROOT/BattleCity/Sources/Data/Constants.swift" \
   "$ROOT/BattleCity/Sources/Entities/Direction.swift"
 
 "$BIN"
